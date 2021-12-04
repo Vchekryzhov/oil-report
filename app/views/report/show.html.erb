@@ -1,22 +1,44 @@
-<%#= image_tag("logo.png", width: 150, heigth: 150, class: "logo") %>
 <div style="text-align: center" >
-    <h1> Отчёт об утечке </h1>
-    <h1> Акционерное общество танеко </h1>
-    <p> 423570, Республика Татарстан, г.Нижнекамск, а/я 97 РУПС </p>
+    <h1> <%= @issue['issueTitle']%> </h1>
 </div>
-<div style="text-align: center">
+<div>
+    <h3> Юридический адресс </h3>
+    <p> <%=@plant['legalAddress']%> </p>
+    <h3> Фактический адресс </h3>
+    <p> <%=@plant['factAddress']%> </p>
+    <h3> продукция </h3>
+    <p> <%=@plant['listProduced']%> </p>
+</div>
+<div >
     <h2> показания с датчика </h2>
-    <%= @issue["issueDescription"].html_safe %>
+    <%= @issue["issueDescription"].html_safe if @issue["issueDescription"] %>
+</div>
+<div >
+    <h2> Близлежащие города </h2>
+    <ul style="padding-left: 0px;">
+        <% @report["issueReportDto"] && @report["issueReportDto"]["affectedCity"] && @report["issueReportDto"]["affectedCity"].map do |city| %>
+            <li> <%= city["addressCity"] %> </li>
+        <% end if @report["issueReportDto"] %>
+    </ul>
 </div>
 <br/>
 <br/>
 
-<div style="text-align: center">
-<h2>Снимки</h2>
-    <% @issue["fileImages"].each_with_index do |image, index| %>
-        <%= image_tag(image["filePath"], height: 150, width: 150, class: "image") %>
-        <%= "<br/>".html_safe if index.odd? %>
-    <% end %>
+<div >
+    <div class="report-image">
+        <h2>Снимки</h2>
+        <% @report["predict"] && @report["predict"]["img"].each_with_index do |image, index| %>
+            <div class="line-image">
+                <%= image_tag("https://oil.kovalev.team/back-img/" + image["originalImg"], height: 150, width: 150, class: "image") %>
+                <%= image_tag("https://oil.kovalev.team/back-img/" + image["predictImg"], height: 150, width: 150, class: "image") %>
+                <div class="image" style="width: 300px; margin-left: 10px">
+                    <% image["metrics"].map do |metric| %>
+                        <p><%= metric["name"] %>: <%= metric["value"] %></p>
+                    <% end %>
+                </div>
+            </div>
+        <% end %>
+    </div>
 </div>
 <style>
     .image{
