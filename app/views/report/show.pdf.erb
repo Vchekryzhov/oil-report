@@ -1,0 +1,25 @@
+<div style="text-align: center" >
+    <h1> Отчёт об утечке </h1>
+    <h1> Акционерное общество танеко </h1>
+    <p> 423570, Республика Татарстан, г.Нижнекамск, а/я 97 РУПС </p>
+</div>
+<div style="text-align: center">
+    <h2> показания с датчика </h2>
+    <%= @issue["issueDescription"].html_safe %>
+</div>
+<br/>
+<br/>
+
+<div style="text-align: center">
+<h2>Снимки</h2>
+    <% @issue["fileImages"].each_with_index do |image, index| %>
+        <%= image_tag(image["filePath"], height: 150, width: 150, class: "image") %>
+        <%= "<br/>".html_safe if index.odd? %>
+    <% end %>
+</div>
+<style>
+    .image{
+        margin-top: 15px;
+        margin-left: 5px;
+    }
+</style>
