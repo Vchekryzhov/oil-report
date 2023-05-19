@@ -6,7 +6,7 @@ require 'mina/rbenv'
 
 set :port, 2848
 set :domain, 'cnc.kovalev.team'
-set :deploy_to, '/home/serveriot/oil-reort/'
+set :deploy_to, '/home/serveriot/oil-report/'
 set :user, 'serveriot'
 set :environment, 'production'
 set :branch, 'main'
@@ -60,7 +60,7 @@ task :setup do
 
 
   command %(touch "#{fetch(:deploy_to)}/shared/config/database.yml")
-  # command %(touch "#{fetch(:deploy_to)}/shared/config/credentials/production.key")
+  command %(touch "#{fetch(:deploy_to)}/shared/config/credentials/production.key")
 end
 
 desc 'Deploys the current version to the server.'
@@ -76,7 +76,7 @@ task :deploy do
     invoke :'rails:assets_precompile'
     on :launch do
       in_path(fetch(:current_path)) do
-        command 'systemctl --user restart evraz-api'
+        command 'systemctl --user restart oil-report'
       end
     end
   end
